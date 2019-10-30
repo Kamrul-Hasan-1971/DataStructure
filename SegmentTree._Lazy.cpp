@@ -19,7 +19,7 @@ void build_tree( int node, int a, int b ) //node=current node, a-b=current range
     }
     int left = node << 1 ;
     int right = ( node << 1 ) + 1 ;
-    int mid = ( a + b ) / 2 ;
+    int mid = ( a + b ) >> 1 ;
 
     build_tree( left, a, mid ) ;
     build_tree( right, mid+1, b ) ;
@@ -30,7 +30,7 @@ ll query_tree( int node, int a, int b, int i, int j )
 {
     int left = node << 1 ;
     int right = ( node << 1)+ 1 ;
-    int mid = ( a + b ) / 2 ;
+    int mid = ( a + b ) >> 1 ;
     if( lazy[node]!=0)
     {
         tree[node]+=((b-a+1)*lazy[node]); // Update it
@@ -55,7 +55,7 @@ void update_tree( int node, int a, int b, int i, int j,ll newValue)
 {
     int left = node << 1 ;
     int right = ( node << 1)+ 1 ;
-    int mid = ( a + b ) / 2 ;
+    int mid = ( a + b ) >> 1 ;
     if( lazy[node] != 0 )  //This node needs to be updated
     {
         tree[node] += ((b-a+1)*lazy[node]) ; //update it
