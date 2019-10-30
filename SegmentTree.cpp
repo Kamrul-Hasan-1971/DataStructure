@@ -5,47 +5,47 @@ using namespace std;
 
 ll tree[MX*3],ara[MX+3];
 
-void MakeTree( int node , int start , int endd )
+void built_tree( int node , int a , int b )
 {
-    if( start == endd )
+    if( a == b )
     {
-        tree[node] = ara[start] ;
+        tree[node] = ara[a] ;
         return ;
     }
-    int left = node * 2 ;
-    int right = ( node * 2 ) + 1 ;
-    int mid = ( start + endd ) / 2 ;
+    int left = node << 1 ;
+    int right = ( node << 1)+ 1 ;
+    int mid = ( a + b ) / 2 ;
 
-    MakeTree( left , start , mid ) ;
-    MakeTree( right , mid+1 , endd ) ;
+    built_tree( left , a , mid ) ;
+    built_tree( right , mid+1 , b ) ;
     tree[node] = tree[left] + tree[right] ;
 }
 
-ll query( int node , int start , int endd , int range1 , int range2 )
+ll query_tree( int node , int a , int b , int i , int j )
 {
-    if( range1 > endd || range2 < start ) return 0 ;
-    if( start >= range1  && endd <= range2 ) return tree[node] ;
+    if( i > b || j < a ) return 0 ;
+    if( a >= i  && b <= j ) return tree[node] ;
 
-    int left = node * 2 ;
-    int right = ( node * 2 )+ 1 ;
-    int mid = ( start + endd ) / 2 ;
-    ll ret1 = query( left , start , mid , range1 , range2 ) ;
-    ll ret2 = query( right , mid+1 , endd , range1 , range2 ) ;
+    int left = node << 1 ;
+    int right = ( node << 1)+ 1 ;
+    int mid = ( a + b ) / 2 ;
+    ll ret1 = query_tree( left , a , mid , i , j ) ;
+    ll ret2 = query_tree( right , mid+1 , b , i , j ) ;
     return ret1+ret2 ;
 }
 
-void update( int node , int start , int endd , int indx , ll newValue)
+void update_tree( int node , int a , int b , int indx , ll newValue)
 {
-    if( indx > endd  || indx < start ) return ;
-    if( start == endd) {
+    if( indx > b  || indx < a ) return ;
+    if( a == b) {
         tree[node] = newValue ;
         return ;
     }
-    int left = node * 2 ;
-    int right = ( node * 2 ) + 1 ;
-    int mid = ( start + endd ) / 2 ;
-    update( left , start , mid , indx ,  newValue ) ;
-    update( right , mid+1 , endd , indx , newValue ) ;
+    int left = node << 1 ;
+    int right = ( node << 1)+ 1 ;
+    int mid = ( a + b ) / 2 ;
+    update_tree( left , a , mid , indx ,  newValue ) ;
+    update_tree( right , mid+1 , b , indx , newValue ) ;
     tree[node] = tree[left] + tree[right] ;
 }
 
@@ -58,11 +58,10 @@ int main()
         scanf("%lld",&ara[i]) ;
     }
 
-    MakeTree( 1 , 1 , n ) ;
-    update( 1 , 1 , n , 2 , 0 ) ;
-    cout<<query( 1 , 1 , n  , 1 , 3 ) <<endl ;
-    update( 1 , 1 , n , 2 , 2 ) ;
-    cout<<query( 1 , 1 , n  , 2 , 2 )<<endl ;
+    built_tree( 1 , 1 , n ) ;
+    update_tree( 1 , 1 , n , 2 , 0 ) ;
+    cout<<query_tree( 1 , 1 , n  , 1 , 3 ) <<endl ;
+    update_tree( 1 , 1 , n , 2 , 2 ) ;
+    cout<<query_tree( 1 , 1 , n  , 2 , 2 )<<endl ;
     return 0 ;
 }
-
