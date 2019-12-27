@@ -4,8 +4,9 @@ using namespace std;
 #define           ll                 long long int
 
 vector<ll>MaxRes , MinRes ;
+ll ara[10];
 
-void printKMax( ll ara[] , ll n , ll k )
+void printKMax( ll n , ll k )
 {
     deque<ll>dq ;
     ll i ;
@@ -28,7 +29,7 @@ void printKMax( ll ara[] , ll n , ll k )
     MaxRes.push_back(ara[dq.front()]);
 }
 
-void printKMin( ll ara[] , ll n , ll k )
+void printKMin( ll n , ll k )
 {
     deque<ll>dq ;
     ll i ;
@@ -52,22 +53,20 @@ void printKMin( ll ara[] , ll n , ll k )
 }
 int main()
 {
-    ll  i , j ;
-    ll ara[]={10 , 50 , 15 , 12 , 4} ;
-    ll n = sizeof(ara) / sizeof(ara[0]);
-    ll k = 3 ;
-    printKMax( ara , n , k ) ;
-    printKMin( ara , n , k ) ;
+    ll  i , j , n , k  ;
+    cin >> n >> k ;
+
+    for( i = 0; i < n ; i++)
+        cin >> ara[i];
+
+    printKMax( n , k ) ;
+    printKMin( n , k ) ;
 
     for( i = 0 ; i < MaxRes.size() ; i++ )
-    {
         cout<<MaxRes[i]<<" ";
-    }
     cout<<endl;
     for( i = 0 ; i < MinRes.size() ; i++ )
-    {
         cout<<MinRes[i]<<" ";
-    }
     cout<<endl;
     return 0 ;
 }
