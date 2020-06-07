@@ -71,9 +71,9 @@ int main()
 {
     ll n , q ,type , idx ,l,r, pos , v ,i,last = 1;
 	scanf("%lld",&n);
-	for (ll i=0; i<n; i++) scanf("%lld,",&arr[i]);
+	for (ll i=1; i<=n; i++) scanf("%lld,",&arr[i]);
 	node* root = new node(NULL, NULL, 0);
-	build(root, 0, n-1);
+	build(root, 1, n);
 	version[0] = root;
 	scanf("%lld",&q);
 	for( i = 1 ; i <= q ; i++)
@@ -82,18 +82,16 @@ int main()
         if(type==1)
         {
             scanf("%lld%lld%lld",&idx,&pos,&v);
-            pos--;
             version[last] = new node(NULL, NULL, 0);
-            ll x = query(version[idx],0,n-1,pos,pos);
-            upgrade(version[idx], version[last++], 0, n-1, pos, v+x);
+            ll x = query(version[idx],1,n,pos,pos);
+            upgrade(version[idx], version[last++], 1, n, pos, v+x);
         }
         else
         {
             scanf("%lld%lld%lld",&idx,&l,&r);
-            ll x = query(version[idx],0,n-1,--l,--r);
+            ll x = query(version[idx],1,n,l,r);
             printf("%lld\n",x);
         }
     }
 	return 0;
 }
-//https://www.spoj.com/problems/PSEGTREE/
