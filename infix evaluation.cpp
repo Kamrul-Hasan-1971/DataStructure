@@ -8,14 +8,12 @@ ll fun(char op)
     if(op == '*'||op == '/')return 2;
     return 0;
 }
-ll applyOp(ll a, ll b, ll op)
+ll applyOp(ll a, ll b, char op)
 {
-    switch(op){
-    case '+': return a + b;
-    case '-': return a - b;
-    case '*': return a * b;
-    case '/': return a / b;
-    }
+    if(op=='+') return a+b;
+    else if(op=='-') return a-b;
+    else if(op=='*') return a*b;
+    else  return a/b;
 }
 void fun2(stack<ll>&values,stack<char>&ops)
 {
@@ -43,6 +41,7 @@ ll evaluate(string s1)
                 val = (val*10) + (s1[i]-'0');
                 i++;
             }
+            i--;
             values.push(val);
         }
         else if(s1[i] == ')')
