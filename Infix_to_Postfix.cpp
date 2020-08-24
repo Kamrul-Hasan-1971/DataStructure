@@ -32,11 +32,11 @@ string infixToPostfix(string s)
 			else return "-1";
 		}
 		else{
-            //ans+=' ';
+            		//ans+=' ';
 			while(!st.empty())
 			{
-			    if(st.top()=='(') break;
-                if(prec(st.top())<prec(s[i])) break;
+			 	if(st.top()=='(') break;
+               			if(prec(st.top())<prec(s[i])) break;
 				ans += st.top();
 				st.pop();
 			}
