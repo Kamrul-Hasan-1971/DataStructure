@@ -40,6 +40,7 @@ ll evaluate(string s1)
             {
                 val = (val*10) + (s1[i]-'0');
                 i++;
+                //break;//for single digit
             }
             i--;
             values.push(val);
