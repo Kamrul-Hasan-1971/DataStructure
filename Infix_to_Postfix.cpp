@@ -18,6 +18,7 @@ string infixToPostfix(string s)
 	for(int i = 0; i < l; i++)
 	{
 	    if(s[i]==' ') continue;
+	    else if(s[i]=='^') st.push('^');
 		else if(isalnum(s[i])) ans+=s[i];
 		else if(s[i] == '(') st.push('(');
 		else if(s[i] == ')')
@@ -35,7 +36,6 @@ string infixToPostfix(string s)
 			while(!st.empty())
 			{
 			    if(st.top()=='(') break;
-                if(prec(st.top())==prec(s[i]) && s[i]=='^') break;
                 if(prec(st.top())<prec(s[i])) break;
 				ans += st.top();
 				st.pop();
