@@ -13,7 +13,10 @@ ll applyOp(ll a, ll b, char op)
     if(op=='+') return a+b;
     else if(op=='-') return a-b;
     else if(op=='*') return a*b;
-    else  return a/b;
+    else  if(op=='/'){
+        if(b==0) return -1;
+        else return a/b;
+    }
 }
 void fun2(stack<ll>&values,stack<char>&ops)
 {
