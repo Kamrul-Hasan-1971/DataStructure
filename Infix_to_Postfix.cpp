@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
+#define ll long long int
 
 int prec(char c)
 {
@@ -11,13 +12,13 @@ int prec(char c)
 
 string infixToPostfix(string s)
 {
-	std::stack<char> st;
+	stack<char> st;
 	int l = s.length();
 	string ans="";
 	for(int i = 0; i < l; i++)
 	{
 	    if(s[i]==' ') continue;
-		else if(isalpha(s[i])) ans+=s[i];
+		else if(isalnum(s[i])) ans+=s[i];
 		else if(s[i] == '(') st.push('(');
 		else if(s[i] == ')')
 		{
@@ -30,17 +31,21 @@ string infixToPostfix(string s)
 			else return "-1";
 		}
 		else{
-			while(!st.empty() && prec(s[i]) <= prec(st.top()))
+            //ans+=' ';
+			while(!st.empty())
 			{
+			    if(st.top()=='(') break;
+                if(prec(st.top())==prec(s[i]) && s[i]=='^') break;
+                if(prec(st.top())<prec(s[i])) break;
 				ans += st.top();
 				st.pop();
 			}
 			st.push(s[i]);
 		}
-
 	}
 	while(!st.empty())
 	{
+	    if(st.top()=='(') return "-1";
 		ans += st.top();
 		st.pop();
 	}
@@ -49,8 +54,13 @@ string infixToPostfix(string s)
 
 int main()
 {
-	string exp = "a+b*(c^d-e)^(f+g*h)-i";
-	cout<<infixToPostfix(exp);
+    int T ,i;
+    cin >> T ;
+	for( i = 0 ; i < T ; i++){
+        string exp;
+        if(i==0) getchar();
+        getline(cin,exp);
+        cout<<infixToPostfix(exp)<<endl;
+	}
 	return 0;
 }
-
