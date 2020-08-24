@@ -4,14 +4,10 @@ using namespace std;
 
 int prec(char c)
 {
-    if(c == '^')
-        return 3;
-    else if(c == '*' || c == '/')
-        return 2;
-    else if(c == '+' || c == '-')
-        return 1;
-    else
-        return -1;
+    if(c == '^') return 3;
+    else if(c == '*' || c == '/') return 2;
+    else if(c == '+' || c == '-') return 1;
+    else return -1;
 }
 
 string infixToPostfix(string s)
@@ -21,14 +17,10 @@ string infixToPostfix(string s)
     string ans="";
     for(int i = 0; i < l; i++)
     {
-        if(s[i]==' ')
-            continue;
-        else if(s[i]=='^')
-            st.push('^');
-        else if(isalnum(s[i]))
-            ans+=s[i];
-        else if(s[i] == '(')
-            st.push('(');
+        if(s[i]==' ') continue;
+        else if(s[i]=='^') st.push('^');
+        else if(isalnum(s[i])) ans+=s[i];
+        else if(s[i] == '(') st.push('(');
         else if(s[i] == ')')
         {
             while(!st.empty() && st.top() != '(')
@@ -36,20 +28,16 @@ string infixToPostfix(string s)
                 ans += st.top();
                 st.pop();
             }
-            if(!st.empty())
-                st.pop();
-            else
-                return "-1";
+            if(!st.empty()) st.pop();
+            else return "-1";
         }
         else
         {
             //ans+=' ';
             while(!st.empty())
             {
-                if(st.top()=='(')
-                    break;
-                if(prec(st.top())<prec(s[i]))
-                    break;
+                if(st.top()=='(') break;
+                if(prec(st.top())<prec(s[i])) break;
                 ans += st.top();
                 st.pop();
             }
@@ -58,8 +46,7 @@ string infixToPostfix(string s)
     }
     while(!st.empty())
     {
-        if(st.top()=='(')
-            return "-1";
+        if(st.top()=='(') return "-1";
         ans += st.top();
         st.pop();
     }
@@ -73,8 +60,7 @@ int main()
     for( i = 0 ; i < T ; i++)
     {
         string exp;
-        if(i==0)
-            getchar();
+        if(i==0) getchar();
         getline(cin,exp);
         cout<<infixToPostfix(exp)<<endl;
     }
