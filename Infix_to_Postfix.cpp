@@ -54,7 +54,6 @@ string infixToPostfix(string s)
     for(int i = 0; i < l; i++)
     {
         if(s[i]==' ') continue;
-        else if(s[i]=='^') st.push('^');
         else if(isalnum(s[i])) ans+=s[i];
         else if(open(s[i])) st.push(s[i]);
         else if(close(s[i]))
@@ -106,4 +105,4 @@ int main()
     }
     return 0;
 }
-//K+L-M*N+(O^P)*W/U/V*T+Q
+//K+L-M*N+(O^P)*W/U/V*T+Q^J^A
