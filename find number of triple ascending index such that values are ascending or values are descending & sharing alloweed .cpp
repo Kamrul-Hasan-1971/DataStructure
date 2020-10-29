@@ -49,8 +49,8 @@ public:
         {
             int val = rating[i];
             update(Rtree,1,1,n,val,-1);
-            ans+=query(Ltree,1,1,n,1,val-1)*query(Rtree,1,1,n,val+1,n);
-            ans+=query(Ltree,1,1,n,val+1,n)*query(Rtree,1,1,n,1,val-1);
+            ans+=query(Ltree,1,1,n,1,val-1)*query(Rtree,1,1,n,val+1,n);//ascneding
+            ans+=query(Ltree,1,1,n,val+1,n)*query(Rtree,1,1,n,1,val-1);//descending
             update(Ltree,1,1,n,val,1);
         }
         return ans;
