@@ -1,3 +1,7 @@
+/*Lazy te max,min ber korar time e upadte value er er multiplictaion part bad jabey..
+tree[node]+=((b-a+1)*lazy[node]); --> tree[node] += lazy[node] ;
+tree[node]+=((b-a+1)*newValue);---> tree[node]+=newValue;*/
+
 #include<bits/stdc++.h>
 using namespace std;
 #define           ll                 long long int
