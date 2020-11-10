@@ -7,6 +7,7 @@ ll tree[MX*3],ara[MX+3];
 
 void built_tree( int node , int a , int b )
 {
+    if(a>b) return ;//extra care for runtime error
     if( a == b )
     {
         tree[node] = ara[a] ;
