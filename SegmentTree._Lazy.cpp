@@ -22,22 +22,22 @@ void build( ll node, ll a, ll b )
     build( right, mid+1, b ) ;
     tree[node] = tree[left] + tree[right];
 }
-
+void push_down(ll node,ll a, ll b)
+{
+    tree[node]+=((b-a+1)*lazy[node]);
+    if(a!=b)
+    {
+        lazy[node<<1] += lazy[node];
+        lazy[(node<<1)+1] += lazy[node];
+    }
+    lazy[node]=0;
+}
 ll query( ll node, ll a, ll b, ll i, ll j )
 {
-    ll left = (node<<1),right = (node<<1)+1,mid = (a+b)>>1 ;
-    if( lazy[node]!=0)
-    {
-        tree[node]+=((b-a+1)*lazy[node]);
-        if(a!=b)
-        {
-            lazy[left] += lazy[node];
-            lazy[right] += lazy[node];
-        }
-        lazy[node]=0;
-    }
+    if( lazy[node]!=0) push_down(node,a,b);
     if( a > b || a > j || b < i ) return 0 ;
     if(a>=i && b <= j) return tree[node];
+    ll left = (node<<1),right = (node<<1)+1,mid = (a+b)>>1 ;
     ll q1 = query(left, a, mid, i, j ) ;
     ll q2 = query(right, mid+1, b, i, j ) ;
     return q1+q2 ;
@@ -45,18 +45,9 @@ ll query( ll node, ll a, ll b, ll i, ll j )
 
 void update( ll node, ll a, ll b, ll i, ll j,ll newValue)
 {
-    ll left = (node<<1),right = (node<<1)+1,mid = (a+b)>>1 ;
-    if( lazy[node] != 0 )
-    {
-        tree[node] += ((b-a+1)*lazy[node]) ;
-        if( a!=b )
-        {
-            lazy[left] += lazy[node];
-            lazy[right] += lazy[node];
-        }
-        lazy[node]=0;
-    }
+    if( lazy[node]!=0) push_down(node,a,b);
     if( a > b || a > j || b < i ) return ;
+    ll left = (node<<1),right = (node<<1)+1,mid = (a+b)>>1 ;
     if( a>=i && b <=j )
     {
         tree[node]+=((b-a+1)*newValue);
@@ -71,7 +62,6 @@ void update( ll node, ll a, ll b, ll i, ll j,ll newValue)
     update( right, mid+1, b, i, j, newValue ) ;
     tree[node]=tree[left]+tree[right];
 }
-
 int main()
 {
     ll n;
