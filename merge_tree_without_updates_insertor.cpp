@@ -3,62 +3,45 @@ using namespace std;
 #define           ll                 long long int
 #define           MX                 30004
 #define           all(v)             v.begin(),v.end()
-
-int ara[MX+3];
-vector<int>tree[4*MX+1];
-
-void built_tree( int node, int a, int b )
+ll ara[MX+3];
+vector<ll>tree[4*MX+1];
+void built( ll n, ll a, ll b )
 {
+    if( a > b ) return;
     if( a == b )
     {
-        tree[node].push_back(ara[a]) ;
+        tree[n].push_back(ara[a]) ;
         return ;
     }
-    int left = node << 1 ;
-    int right = ( node << 1)+ 1 ;
-    int mid = ( a + b ) / 2 ;
-
-    built_tree( left, a, mid ) ;
-    built_tree( right, mid+1, b ) ;
-    merge(all(tree[left]),all(tree[right]),back_inserter(tree[node]));
+    ll l = (n << 1),r = ( n << 1)+ 1 ,m = ( a + b ) / 2 ;
+    built( l, a, m ) ;
+    built( r, m+1, b ) ;
+    merge(all(tree[l]),all(tree[r]),back_inserter(tree[n]));
 }
-
-ll query_tree( int node, int a, int b, int i, int j,int key)
+ll query( ll n, ll a, ll b, ll i, ll j,ll key)
 {
-    if( i > b || j < a )
-        return 0 ;
+    if( a > b || i > b || j < a ) return 0 ;
     if( a >= i  && b <= j )
     {
-        int x = upper_bound(all(tree[node]),key)-tree[node].begin();
-        int p = tree[node].size();
+        ll x = upper_bound(all(tree[n]),key)-tree[n].begin();
+        ll p = tree[n].size();
         return p-x;
     }
-
-    int left = node << 1 ;
-    int right = ( node << 1)+ 1 ;
-    int mid = ( a + b ) / 2 ;
-    ll ret1 = query_tree( left, a, mid, i, j, key) ;
-    ll ret2 = query_tree( right, mid+1, b, i, j,key) ;
-    return ret1+ret2 ;
+    ll l = (n << 1),r = ( n << 1)+ 1 ,m = ( a + b ) / 2 ;
+    ll r1 = query( l, a, m, i, j, key) ;
+    ll r2 = query( r, m+1, b, i, j,key) ;
+    return r1+r2 ;
 }
-
 int main()
 {
-
-    int i, n, j,inp,a,b,m,k;
-    scanf("%d", &n ) ;
-    for( i = 1 ; i <= n ; i++ )
-    {
-        scanf("%d",&ara[i]);
-    }
-    scanf("%d",&m);
-    built_tree( 1, 1, n ) ;
-    for( j = 1 ; j <= m ; j++)
-    {
-        scanf("%d%d%d",&a,&b,&k);
-        ll x = query_tree(1,1,n,a,b,k);
-        printf("%lld\n",x);
-    }
+    ll i, n, j,a,b,k;
+    scanf("%lld", &n ) ;
+    for( i = 1 ; i <= n ; i++ ) scanf("%lld",&ara[i]);
+    built( 1, 1, n ) ;
+    scanf("%lld%lld%lld",&a,&b,&k);
+    printf("%lld\n",query(1,1,n,a,b,k));
     return 0 ;
 }
+
+
 //https://www.spoj.com/problems/KQUERY/
