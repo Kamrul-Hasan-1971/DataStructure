@@ -6,99 +6,81 @@ tree[node]+=((b-a+1)*newValue);---> tree[node]+=newValue;*/
 using namespace std;
 #define           ll                 long long int
 #define           MX                 100005
-#define           inf                0x3f3f3f3f
+#define           inf                LLONG_MAX
 #define           zero(a)            memset(a,0,sizeof a)
-
-
 ll tree[MX*3], ara[MX], lazy[MX*3];
-
-void build_tree( int node, int a, int b ) //node=current node, a-b=current range
+void build( ll node, ll a, ll b )
 {
-    if( a > b )
-        return ; //out of range
-    if( a == b ) //Leaf node
+    if( a > b ) return ;
+    if( a == b )
     {
-        tree[node] = ara[a] ; //initialize value
+        tree[node] = ara[a] ;
         return ;
     }
-    int left = node << 1 ;
-    int right = ( node << 1 ) + 1 ;
-    int mid = ( a + b ) >> 1 ;
-
-    build_tree( left, a, mid ) ;
-    build_tree( right, mid+1, b ) ;
+    ll left = (node<<1),right = (node<<1)+1,mid = (a+b)>>1 ;
+    build( left, a, mid ) ;
+    build( right, mid+1, b ) ;
     tree[node] = tree[left] + tree[right];
 }
 
-ll query_tree( int node, int a, int b, int i, int j )
+ll query( ll node, ll a, ll b, ll i, ll j )
 {
-    int left = node << 1 ;
-    int right = ( node << 1)+ 1 ;
-    int mid = ( a + b ) >> 1 ;
+    ll left = (node<<1),right = (node<<1)+1,mid = (a+b)>>1 ;
     if( lazy[node]!=0)
     {
-        tree[node]+=((b-a+1)*lazy[node]); // Update it
-        if(a!=b) //not leaf node.mark it's child as lazy
+        tree[node]+=((b-a+1)*lazy[node]);
+        if(a!=b)
         {
-            lazy[left] += lazy[node]; //mark child as lazy
-            lazy[right] += lazy[node]; //mark child as lazy
+            lazy[left] += lazy[node];
+            lazy[right] += lazy[node];
         }
-        lazy[node]=0; // Reset it
+        lazy[node]=0;
     }
-    if( a > b || a > j || b < i )
-        return 0 ; // Out of range
-    if(a>=i && b <= j)
-        return tree[node];
-
-    ll q1 = query_tree(left, a, mid, i, j ) ;
-    ll q2 = query_tree(right, mid+1, b, i, j ) ;
-    return q1+q2 ; // Return final result
+    if( a > b || a > j || b < i ) return 0 ;
+    if(a>=i && b <= j) return tree[node];
+    ll q1 = query(left, a, mid, i, j ) ;
+    ll q2 = query(right, mid+1, b, i, j ) ;
+    return q1+q2 ;
 }
 
-void update_tree( int node, int a, int b, int i, int j,ll newValue)
+void update( ll node, ll a, ll b, ll i, ll j,ll newValue)
 {
-    int left = node << 1 ;
-    int right = ( node << 1)+ 1 ;
-    int mid = ( a + b ) >> 1 ;
-    if( lazy[node] != 0 )  //This node needs to be updated
+    ll left = (node<<1),right = (node<<1)+1,mid = (a+b)>>1 ;
+    if( lazy[node] != 0 )
     {
-        tree[node] += ((b-a+1)*lazy[node]) ; //update it
+        tree[node] += ((b-a+1)*lazy[node]) ;
         if( a!=b )
         {
-            lazy[left] += lazy[node]; //mark child as lazy
-            lazy[right] += lazy[node]; //mark child as lazy
+            lazy[left] += lazy[node];
+            lazy[right] += lazy[node];
         }
-        lazy[node]=0; //Reset it
+        lazy[node]=0;
     }
-    if( a > b || a > j || b < i )
-        return ; //current segment is not within range
+    if( a > b || a > j || b < i ) return ;
     if( a>=i && b <=j )
     {
         tree[node]+=((b-a+1)*newValue);
-        if(a!=b)// Not leaf node
+        if(a!=b)
         {
             lazy[left] += newValue ;
             lazy[right] += newValue ;
         }
         return ;
     }
-    update_tree( left, a, mid, i, j, newValue ) ;
-    update_tree( right, mid+1, b, i, j, newValue ) ;
+    update( left, a, mid, i, j, newValue ) ;
+    update( right, mid+1, b, i, j, newValue ) ;
     tree[node]=tree[left]+tree[right];
 }
 
 int main()
 {
-    int n;
-    scanf("%d",&n);
-    for(int i=1;i<=n;i++) scanf("%d",&ara[i]);
-    build_tree(1,1,n);
+    ll n;
+    scanf("%lld",&n);
+    for(ll i=1;i<=n;i++) scanf("%lld",&ara[i]);
+    build(1,1,n);
     memset(lazy,0,sizeof(lazy));
-    update_tree(1,1,n,1,4,5);  //increment range [0,3] by 5
-    update_tree(1,1,n,8,11,12); // Incremenet range [7, 10] by 12
-    update_tree(1,1,n, 11,n,100); // Increment range [10, N-1] by 100
-    int ans=query_tree(1,1,n,1,n);  //Get min value in range [0,n-1]
+    update(1,1,n, 11,n,100);
+    ll ans=query(1,1,n,1,n);
     cout<<ans<<endl;
     return 0;
 }
-//http://delower13.blogspot.com/2017/06/blog-post_92.html#more
