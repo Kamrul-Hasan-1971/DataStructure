@@ -13,7 +13,7 @@ void built_tree( ll node , ll a , ll b )
         tree[node] = ara[a] ;
         return ;
     }
-    ll left = node << 1 ,right = ( node << 1)+ 1,mid = ( a + b ) / 2 ;
+    ll left = (node << 1) ,right = ( node << 1)+ 1,mid = ( a + b ) / 2 ;
     built_tree( left , a , mid ) ;
     built_tree( right , mid+1 , b ) ;
     tree[node] = tree[left] + tree[right] ;
@@ -23,7 +23,7 @@ ll query_tree( ll node , ll a , ll b , ll i , ll j )
 {
     if( i > b || j < a ) return 0 ;
     if( a >= i  && b <= j ) return tree[node] ;
-    ll left = node << 1,right = ( node << 1)+ 1,mid = ( a + b ) / 2 ;
+    ll left = (node << 1) ,right = ( node << 1)+ 1,mid = ( a + b ) / 2 ;
     ll ret1 = query_tree( left , a , mid , i , j ) ;
     ll ret2 = query_tree( right , mid+1 , b , i , j ) ;
     return ret1+ret2 ;
@@ -36,7 +36,7 @@ void update_tree( ll node , ll a , ll b , ll indx , ll newValue)
         tree[node] = newValue ;
         return ;
     }
-    ll left = node << 1,right = ( node << 1)+ 1,mid = ( a + b ) / 2 ;
+    ll left = (node << 1) ,right = ( node << 1)+ 1,mid = ( a + b ) / 2 ;
     update_tree( left , a , mid , indx ,  newValue ) ;
     update_tree( right , mid+1 , b , indx , newValue ) ;
     tree[node] = tree[left] + tree[right] ;
