@@ -42,6 +42,4 @@ int main()
     printf("%lld\n",query(1,1,n,a,b,k));
     return 0 ;
 }
-
-
 //https://www.spoj.com/problems/KQUERY/
