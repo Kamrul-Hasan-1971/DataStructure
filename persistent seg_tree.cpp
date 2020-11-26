@@ -90,7 +90,7 @@ int main()
         {
             scanf("%lld%lld%lld",&idx,&l,&r);
             ll x = query(version[idx],1,n,l,r);
-            printf("%lld\n",x);
+            prllf("%lld\n",x);
         }
     }
 	return 0;
