@@ -1,102 +1,106 @@
 //https://rezwanarefin01.github.io/posts/block-decomposition-01/
+//https://www.spoj.com/problems/XXXXXXXX/
 #include <bits/stdc++.h>
 using namespace std;
-const int N=1e5+5;
-const int Q=1e5+5;
-int S;
-
+#define ll long long int
+#define MX 50004
+#define Q  100005
+ll S,ml=0,mr=-1,t=0,cur=0,b[MX],cnt[MX],org[MX],a[MX],au[MX],res[Q];
+unordered_map<ll,ll>cmp;
 struct query
 {
-    int l,r,t,i;
+    ll l,r,t,i;
     bool operator<(const query&o)const
     {
-        if(l/S!=o.l/S)
-            return l<o.l;
-        if(r/S!=o.r/S)
-            return r<o.r;
+        if(l/S!=o.l/S) return l<o.l;
+        if(r/S!=o.r/S) return r<o.r;
         return t<o.t;
     }
 } q[Q];
 struct updt
 {
-    int i, nxt, prv;
+    ll i, nxt, prv;
 } u[Q];
-
-int a[N], au[N];
-int ml=0, mr=-1, t=0;
-long long re[Q], cur=0;
-unordered_map<int,int>cnt;
-void add(int i)
+void add(ll i)
 {
-    int x=a[i];
-    auto it=cnt.find(x);
-    if(it->second==0 and x%3==0)
-        cur+=x;
-    ++(it->second);
+    if(cnt[a[i]]==0) cur+=org[a[i]];
+    cnt[a[i]]++;
 }
-void del(int i)
+void del(ll i)
 {
-    int x=a[i];
-    auto it=cnt.find(x);
-    if(it->second==1 and x%3==0)cur-=x;
-    --(it->second);
+    if(cnt[a[i]]==1) cur-=org[a[i]];
+    cnt[a[i]]--;
 }
-void updo(int i)
+void updo(ll i)
 {
-    int j=u[i].i, nxt=u[i].nxt;
+    ll j=u[i].i, nxt=u[i].nxt;
     if(j>=ml and j<=mr) del(j);
     a[j]=nxt;
     if(j>=ml and j<=mr) add(j);
 }
-void undo(int i)
+void undo(ll i)
 {
-    int j=u[i].i, prv=u[i].prv;
+    ll j=u[i].i, prv=u[i].prv;
     if(j>=ml and j<=mr) del(j);
     a[j]=prv;
     if(j>=ml and j<=mr)add(j);
 }
 int main()
 {
-    int n, m, c;
-    scanf("%d %d",&n,&m);
+    ll i,n, m, c,su=0, sq=0, l, r,ini=1,indx,newval;
+    char ch;
+    scanf("%lld",&n);
     S = n/cbrt(n);
-
-    for(int i=0; i<n; ++i)
+    // i dont know why compression needed!!
+    for(ll i=0; i<n; ++i)
     {
-        scanf("%d",&a[i]);
-        cnt[a[i]];
+        scanf("%lld",&a[i]);
+        if(!cmp.count(a[i]))
+        {
+            org[ini]=a[i];
+            cmp[a[i]]=ini++;
+        }
+        a[i]=cmp[a[i]];
         au[i]=a[i];
     }
-    int su=0, sq=0, l, r;
-    for(int i=0; i<m; ++i)
+    scanf("%lld",&m);
+    for(ll i=0; i<m; ++i)
     {
-        scanf("%d%d%d",&c,&l,&r);
-        if(c==1)
+        getchar();
+        scanf("%c",&ch);
+        if(ch=='Q')
         {
+            scanf("%lld%lld",&l,&r);
             --l,--r;
             q[sq]= {l,r,su,sq};
             sq++;
         }
         else
         {
-            --l;
-            cnt[r];
-            u[su++]= {l,r,au[l]};
-            au[l]=r;
+            scanf("%lld%lld",&indx,&newval);
+            --indx;
+            if(!cmp.count(newval))
+            {
+                org[ini]=newval;
+                cmp[newval]=ini++;
+            }
+            newval=cmp[newval];
+            u[su++]= {indx,newval,au[indx]};
+            au[indx]=newval;
         }
     }
     sort(q,q+sq);
-    for(int j=0; j<sq; ++j)
+    for(ll j=0; j<sq; ++j)
     {
-        int l=q[j].l, r=q[j].r, qt=q[j].t, i=q[j].i;
+        ll l=q[j].l, r=q[j].r, qt=q[j].t, i=q[j].i;
         while(t<qt) updo(t++);
         while(t>qt) undo(--t);
         while(ml<l) del(ml++);
         while(ml>l) add(--ml);
         while(mr<r) add(++mr);
         while(mr>r) del(mr--);
-        re[i]=cur;
+        res[i]=cur;
     }
-    for(int i=0; i<sq; ++i) printf("%lld\n",re[i]);
+    for(ll i=0; i<sq; ++i) printf("%lld\n",res[i]);
     return 0;
 }
