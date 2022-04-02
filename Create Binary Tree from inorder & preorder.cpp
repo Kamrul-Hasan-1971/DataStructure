@@ -1,7 +1,7 @@
 class Solution
 {
 public:
-    unordered_map<int,int>mp;
+    map<int,int>mp;
     TreeNode* fun(vector<int>&pre, int i,int j, vector<int>&in, int ii, int jj)
     {
         if(j<=0) return NULL;
