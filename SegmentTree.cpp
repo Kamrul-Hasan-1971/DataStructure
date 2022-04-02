@@ -21,7 +21,7 @@ void built_tree( ll node , ll a , ll b )
 
 ll query_tree( ll node , ll a , ll b , ll i , ll j )
 {
-    if( i > b || j < a ) return 0 ;
+    if(a > b || i > b || j < a ) return 0 ;
     if( a >= i  && b <= j ) return tree[node] ;
     ll left = (node << 1) ,right = ( node << 1)+ 1,mid = ( a + b ) / 2 ;
     ll ret1 = query_tree( left , a , mid , i , j ) ;
