@@ -9,7 +9,7 @@ ll maxSubArraySumNotGreaterThanK(vector<ll>&arr, ll K)
 	ll max_sum = LLONG_MIN, cSum = 0;
 	for (ll i = 0; i < arr.size(); i++) {
 		cSum += arr[i];
-		auto it = cum_set.lower_bound(cSum - K);
+		auto it = cum_set.lower_bound(cSum - K); // we need to deduct the extra value more than k from the beginning of current subarraysum
 		if (it != cum_set.end()) max_sum = max(max_sum, cSum - *it);
 		cum_set.insert(cSum);
 	}
