@@ -1,39 +1,43 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-#define ll long long int
-vector<ll>v1;
-ll fun()
-{
-    ll mx = LLONG_MIN, now = 0, start =0, endd = 0, s=0;
-    for (ll i=0; i< v1.size() ; i++ )
-    {
-        now += v1[i];
-        if (mx < now)
-        {
-            mx = now;
-            //start = s;
-            //endd = i;
+#define  ll             long long int
+
+class KadaneResult{
+public:
+    ll maxSum, startIndex, endIndex;
+    KadaneResult(ll maxSum, ll startIndex, ll endIndex) {
+        this->maxSum = maxSum;
+        this->startIndex = startIndex;
+        this->endIndex = endIndex;
+    }
+};
+
+KadaneResult kadaneMaxSubArraySum(vector<ll>&arr){
+    ll mx = 0, maxStart = -1, maxEnd = -1, currentStart = 0, maxSoFar = 0;
+    for(ll i=0; i < arr.size(); i++){
+        maxSoFar += arr[i];
+        if(maxSoFar < 0){
+            maxSoFar = 0;
+            currentStart = i+1;
         }
-        if (now < 0)
-        {
-            now = 0;
-            //s = i + 1;
+        if(mx < maxSoFar){
+            maxStart = currentStart;
+            maxEnd = i;
+            mx = maxSoFar;
         }
     }
-    //cout << "Starting "<< start<< endl << "Ending "<< endd << endl;
-    return mx;
+    return KadaneResult(mx, maxStart, maxEnd);
 }
 
 int main()
 {
-    ll i, j, n, a;
-    cin >> n ;
-    for( i = 0 ; i < n ; i++)
+    ll  a;
+    while(true)
     {
-        cin >> a;
-        v1.push_back(a);
+        cin>>a;
+        vector<ll>v1 = { 5, -2, 6, 3, -5 , 20};
+        KadaneResult res =  kadaneMaxSubArraySum(v1);
+        cout<<res.maxSum<<" "<<res.startIndex<<" "<<res.endIndex<<endl;
     }
-    ll max_sum = fun();
-    cout<<max_sum<<endl;
-    return 0;
+    return 0 ;
 }
