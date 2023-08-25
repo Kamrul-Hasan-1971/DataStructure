@@ -17,17 +17,17 @@ public:
     }
     ListNode* sortList(ListNode* head)
     {
-        if(head==nullptr || head->next==nullptr) return head;
-        ListNode *slow = head,*fast=head->next->next;
-        while(fast&&fast->next)
+        if(head==nullptr || head->next == nullptr) return head;
+        ListNode *slow = head,*fast = head, *temp = nullptr;
+        while(fast && fast->next)
         {
+            temp = slow;
             slow=slow->next;
             fast=fast->next->next;
         }
-        ListNode *left,*right;
-        right = sortList(slow->next);
-        slow->next=NULL;
-        left = sortList(head);
+        temp->next = nullptr;
+        ListNode *left = sortList(head);
+        ListNode *right = sortList(slow);
         return merge(left,right);
     }
 };
