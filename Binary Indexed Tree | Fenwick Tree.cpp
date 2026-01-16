@@ -10,6 +10,17 @@ using ll = long long;
 int ar[mx];
 int tree[mx];
 
+int find(int k) {
+    int curr = 0, ans = 0, prevsum = 0;
+    for(int i = 20; i >= 0; i--) {
+        if(tree[cur + (1 << i)] + prevsum < k) {
+            curr = curr + (1 << i);
+            prevSum += tree[cur + (1 << i)];
+        }
+    }
+    return curr + 1;
+}
+
 int read(int idx){
     int sum = 0;
     while (idx > 0){
