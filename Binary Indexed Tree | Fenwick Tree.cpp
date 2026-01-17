@@ -11,11 +11,11 @@ int ar[mx];
 int tree[mx];
 
 int find(int k) {
-    int curr = 0, ans = 0, prevsum = 0;
+    int cur = 0, ans = 0, prevsum = 0;
     for(int i = 20; i >= 0; i--) {
         if(tree[cur + (1 << i)] + prevsum < k) {
-            curr = curr + (1 << i);
             prevSum += tree[cur + (1 << i)];
+            cur = cur + (1 << i);
         }
     }
     return curr + 1;
